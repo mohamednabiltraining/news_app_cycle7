@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
-import 'package:news_app/View/category_news_list.dart';
+import 'package:news_app/View/category/category_widget.dart';
 
 import 'category_grid_view.dart';
 
@@ -15,37 +15,37 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   List<Category> category = [
     Category(
-      categoryID: "Sports",
+      categoryID: "sports",
       categoryImage: "assets/images/sports.png",
       categoryTitle: "Sports",
       categoryBackground: const Color.fromARGB(255, 201, 28, 34),
     ),
     Category(
-      categoryID: "General",
+      categoryID: "general",
       categoryImage: "assets/images/Politics.png",
-      categoryTitle: "Politics",
+      categoryTitle: "General",
       categoryBackground: const Color.fromARGB(255, 0, 62, 144),
     ),
     Category(
-      categoryID: "Health",
+      categoryID: "health",
       categoryImage: "assets/images/health.png",
       categoryTitle: "Health",
       categoryBackground: const Color.fromARGB(255, 237, 30, 121),
     ),
     Category(
-      categoryID: "Bussines",
+      categoryID: "business",
       categoryImage: "assets/images/bussines.png",
-      categoryTitle: "Bussines",
+      categoryTitle: "Business",
       categoryBackground: const Color.fromARGB(255, 207, 126, 72),
     ),
     Category(
-      categoryID: "Environment",
+      categoryID: "technology",
       categoryImage: "assets/images/environment.png",
-      categoryTitle: "Environment",
+      categoryTitle: "Technology",
       categoryBackground: const Color.fromARGB(255, 72, 130, 207),
     ),
     Category(
-      categoryID: "Science",
+      categoryID: "science",
       categoryImage: "assets/images/science.png",
       categoryTitle: "Science",
       categoryBackground: const Color.fromARGB(255, 242, 211, 82),
