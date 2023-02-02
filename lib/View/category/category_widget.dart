@@ -1,36 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/Core/api/api_manager.dart';
-import 'package:news_app/Core/model/SourcesResponse.dart';
 import 'package:news_app/View/category/category_tabs_widget.dart';
+import 'package:news_app/View/category/category_viewModel.dart';
+import 'package:news_app/View/category/navigator.dart';
 import 'package:news_app/View/home/category_grid_view.dart';
+import 'package:news_app/base/base_state.dart';
+import 'package:provider/provider.dart';
 
-class CategoryNewsList extends StatelessWidget {
-
+class CategoryNewsList extends StatefulWidget {
   Category category;
 
   CategoryNewsList(this.category);
 
   @override
+  State<CategoryNewsList> createState() => _CategoryNewsListState();
+}
+
+class _CategoryNewsListState
+    extends BaseState<CategoryNewsList, CategoryNewsListViewModel>
+    implements CategoryNewsListNavigator {
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loadNewsSources(widget.category.categoryID);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder<SourcesResponse>(
-        future: ApiManager.getSources(category.categoryID),
-        builder: (buildContext,snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator(),);
+    return ChangeNotifierProvider<CategoryNewsListViewModel>(
+      create: (_) => viewModel,
+      child: Consumer<CategoryNewsListViewModel>(
+        builder: (buildContext, viewModel, child) {
+          if (viewModel.errorMessage != null) {
+            return Center(
+              child: Column(
+                children: [
+                  child!,
+                  Text(viewModel.errorMessage!),
+                  ElevatedButton(
+                      onPressed: () {
+                        viewModel.loadNewsSources(widget.category.categoryID);
+                      },
+                      child: Text('Try Again'))
+                ],
+              ),
+            );
+          } else if (viewModel.sources == null) {
+            // loading
+            return Column(
+              children: [
+                child!,
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                child!,
+                Expanded(child: CategoryTabsWidget(viewModel.sources!)),
+              ],
+            );
           }
-          if(snapshot.hasError){
-            return Center(child: Text('Error loading data${
-            snapshot.error.toString()}'),);
-          }
-          if(snapshot.data?.status =='error'){
-            return Center(child: Text('Server Error${
-                snapshot.data?.message}'),);
-          }
-          var sources = snapshot.data?.sources;
-          return CategoryTabsWidget(sources!);
         },
+        child: Text('header text view'),
       ),
     );
+  }
+
+  @override
+  CategoryNewsListViewModel initViewModel() {
+    return CategoryNewsListViewModel();
   }
 }
