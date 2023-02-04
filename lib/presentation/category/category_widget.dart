@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/View/category/category_tabs_widget.dart';
-import 'package:news_app/View/category/category_viewModel.dart';
-import 'package:news_app/View/home/category_grid_view.dart';
 import 'package:news_app/dialog_utils.dart';
+import 'package:news_app/presentation/category/category_tabs_widget.dart';
+import 'package:news_app/presentation/category/category_viewModel.dart';
+import 'package:news_app/presentation/di.dart';
+import 'package:news_app/presentation/home/category_grid_view.dart';
 
 class CategoryNewsList extends StatefulWidget {
   Category category;
@@ -15,7 +16,7 @@ class CategoryNewsList extends StatefulWidget {
 }
 
 class _CategoryNewsListState extends State<CategoryNewsList> {
-  CategoryViewModel viewModel = CategoryViewModel();
+  CategoryViewModel viewModel = CategoryViewModel(injectGetSourcesUseCase());
 
   @override
   void initState() {

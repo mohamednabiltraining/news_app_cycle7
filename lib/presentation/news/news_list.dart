@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/Core/model/Source.dart';
-import 'package:news_app/View/news/news_item.dart';
-import 'package:news_app/View/news/news_view_model.dart';
+import 'package:news_app/domain/model/Source.dart';
+import 'package:news_app/presentation/di.dart';
+import 'package:news_app/presentation/news/news_item.dart';
+import 'package:news_app/presentation/news/news_view_model.dart';
 
 class NewsList extends StatefulWidget {
   Source source;
@@ -14,7 +15,7 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsList> {
-  NewsViewModel viewModel = NewsViewModel();
+  NewsViewModel viewModel = NewsViewModel(injectGetNewsBySourceIdUseCase());
 
   @override
   void initState() {

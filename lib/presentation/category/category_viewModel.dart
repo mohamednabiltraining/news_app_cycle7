@@ -1,23 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/Core/api/api_manager.dart';
-import 'package:news_app/Core/model/Source.dart';
+import 'package:news_app/domain/exceptions/NetWorkError.dart';
+import 'package:news_app/domain/exceptions/ServerError.dart';
+import 'package:news_app/domain/model/Source.dart';
+import 'package:news_app/domain/useCase/getSources.dart';
 
 //<T>-> state
 class CategoryViewModel extends Cubit<CategoryState> {
-  CategoryViewModel() : super(LoadingState());
+  GetSourcesUseCase getSourcesUseCase;
+
+  CategoryViewModel(this.getSourcesUseCase) : super(LoadingState());
 
   void getSourcesByCategoryId(String categoryId) async {
     try {
-      var response = await ApiManager.getSources(categoryId);
-      if (response.status == 'error') {
-        emit(ErrorState(response.message!));
-        return;
-      }
-      emit(SourcesLoadedState(response.sources!));
+      var sourcesList = await getSourcesUseCase.invoke(categoryId);
+
+      emit(SourcesLoadedState(sourcesList!));
       emit(ShowMessageDialogAction('Sources Loaded successfully'));
       return;
-    } catch (e) {
-      emit(ErrorState('Error loading Sources'));
+    } on ServerError catch (e) {
+      emit(ErrorState(e.message));
+    } on NetWorkError catch (e) {
+      emit(ErrorState('Please check internet connection'));
     }
   }
 }

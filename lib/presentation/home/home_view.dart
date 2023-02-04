@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
-import 'package:news_app/View/category/category_widget.dart';
+import 'package:news_app/presentation/category/category_widget.dart';
 
 import 'category_grid_view.dart';
 

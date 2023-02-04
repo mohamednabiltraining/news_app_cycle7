@@ -1,4 +1,4 @@
-import 'package:news_app/Core/model/News.dart';
+import 'package:news_app/data/model/news_dto.dart';
 
 /// status : "ok"
 /// totalResults : 6123
@@ -6,9 +6,10 @@ import 'package:news_app/Core/model/News.dart';
 
 class NewsResponse {
   NewsResponse({
-      this.status, 
-      this.totalResults, 
-      this.newsList,});
+    this.status,
+    this.totalResults,
+    this.newsList,
+  });
 
   NewsResponse.fromJson(dynamic json) {
     status = json['status'];
@@ -18,15 +19,16 @@ class NewsResponse {
     if (json['articles'] != null) {
       newsList = [];
       json['articles'].forEach((v) {
-        newsList?.add(News.fromJson(v));
+        newsList?.add(NewsDTO.fromJson(v));
       });
     }
   }
+
   String? status;
   String? message;
   String? code;
   num? totalResults;
-  List<News>? newsList;
+  List<NewsDTO>? newsList;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -37,5 +39,4 @@ class NewsResponse {
     }
     return map;
   }
-
 }
